@@ -52,8 +52,10 @@ func match(path, pattern string, vars ...interface{}) bool {
 			if slash < 0 {
 				slash = len(path)
 			}
+
 			segment := path[:slash]
 			path = path[slash:]
+
 			switch p := vars[0].(type) {
 			case *string:
 				*p = segment
@@ -66,6 +68,7 @@ func match(path, pattern string, vars ...interface{}) bool {
 			default:
 				panic("vars must be *string or *int")
 			}
+
 			vars = vars[1:]
 		case path[0]:
 			// non-'+' pattern byte must match path byte
@@ -74,5 +77,6 @@ func match(path, pattern string, vars ...interface{}) bool {
 			return false
 		}
 	}
+
 	return path == "" && pattern == ""
 }
