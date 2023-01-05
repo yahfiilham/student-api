@@ -52,6 +52,7 @@ func run(ctx context.Context) error {
 			log.Fatal().Msgf("listen: %+s\n", err)
 		}
 	}()
+	log.Info().Msgf("server running at http://localhost:8080")
 
 	<-ctx.Done()
 
