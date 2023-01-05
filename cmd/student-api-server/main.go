@@ -11,7 +11,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/yahfiilham/student-api/pkg/app"
 	ihttp "github.com/yahfiilham/student-api/pkg/http"
+	"github.com/yahfiilham/student-api/pkg/store/memory"
 )
 
 func main() {
@@ -35,11 +37,14 @@ func main() {
 }
 
 func run(ctx context.Context) error {
-	h := ihttp.NewHandler()
-	ihttp.Routes(h)
+	store := memory.NewStudentStore()
+	svc := app.NewStudentSvc(store)
+	h := ihttp.NewHandler(svc)
+	r := ihttp.NewRoute(h)
 
 	srv := http.Server{
-		Addr: fmt.Sprintf(":%d", 8080),
+		Addr:    fmt.Sprintf(":%d", 8080),
+		Handler: r,
 	}
 
 	go func() {

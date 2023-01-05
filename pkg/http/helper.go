@@ -7,9 +7,15 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func respond(w http.ResponseWriter, r *http.Request, resp *Resp) {
+func respond(w http.ResponseWriter, code int, msg string, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(resp.Code)
+	w.WriteHeader(code)
+
+	resp := Resp{
+		Code: code,
+		Msg:  msg,
+		Data: data,
+	}
 
 	bts, err := json.Marshal(resp)
 	if err != nil {
